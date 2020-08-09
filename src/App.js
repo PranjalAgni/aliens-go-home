@@ -1,26 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useCallback, useMemo } from 'react';
+import PropTypes from 'prop-types';
+import Canvas from './components/Canvas';
+import { getCanvasPosition } from './utils/formulas';
 
-function App() {
+function App(props) {
+  useEffect(() => {
+    console.log('My app component is mounted...');
+  }, []);
+
+  const trackMouse = useCallback(({ clientX, clientY }) => {
+    const canvasMousePos = getCanvasPosition(clientX, clientY);
+    props.moveObjects(canvasMousePos);
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Canvas angle={props.angle} trackMouse={trackMouse} />
     </div>
   );
 }
+
+App.propTypes = {
+  angle: PropTypes.number.isRequired,
+  moveObjects: PropTypes.func.isRequired,
+};
 
 export default App;
