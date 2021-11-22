@@ -1,17 +1,18 @@
-import React, { useEffect, useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
+import React, { useCallback } from 'react';
 import Canvas from './components/Canvas';
 import { getCanvasPosition } from './utils/formulas';
 
 function App(props) {
-  useEffect(() => {
-    console.log('My app component is mounted...');
-  }, []);
+  const { moveObjects } = props;
 
-  const trackMouse = useCallback(({ clientX, clientY }) => {
-    const canvasMousePos = getCanvasPosition(clientX, clientY);
-    props.moveObjects(canvasMousePos);
-  }, []);
+  const trackMouse = useCallback(
+    ({ clientX, clientY }) => {
+      const canvasMousePos = getCanvasPosition(clientX, clientY);
+      moveObjects(canvasMousePos);
+    },
+    [moveObjects]
+  );
 
   return (
     <div>
